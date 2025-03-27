@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  TextInput, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
   Image,
   Animated,
   Dimensions
@@ -19,17 +19,17 @@ import { CartContext } from "../context/CartContext";
 // Create a context to manage the sidebar state globally
 export const SidebarContext = React.createContext({
   isOpen: false,
-  toggleSidebar: () => {},
+  toggleSidebar: () => { },
 });
 
 // Create a SidebarProvider component
 export const SidebarProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const toggleSidebar = () => {
     setIsOpen(prev => !prev);
   };
-  
+
   return (
     <SidebarContext.Provider value={{ isOpen, toggleSidebar }}>
       {children}
@@ -42,7 +42,7 @@ export function TopNavbar() {
   const { cart } = useContext(CartContext);
   const { toggleSidebar } = useContext(SidebarContext);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const navigateTo = (path) => {
     if (router?.push) {
       router.push(path);
@@ -55,29 +55,29 @@ export function TopNavbar() {
     // Navigate to the product list page with the search query
     router.push("/pages/SearchScreen", { search: searchQuery });
   };
-  
+
   return (
     <LinearGradient colors={["#ffffff", "#ffffff"]} style={styles.topNavbar}>
       <TouchableOpacity onPress={toggleSidebar} style={styles.hamburgerIcon}>
         <Ionicons name="menu-outline" size={28} color="#000" />
       </TouchableOpacity>
-      
+
       <View style={styles.logoContainer}>
         <Image source={require("../assets/images/logo.png")} style={styles.logo} />
         <Text style={styles.logoName}>Jewel</Text>
       </View>
-      
+
       <View style={styles.searchContainer}>
         <Ionicons name="search-outline" size={18} color="#888" style={styles.searchIcon} />
         <TextInput
-  style={styles.searchInput}
-  placeholder="Search..."
-  placeholderTextColor="#aaa"
-  value={searchQuery}
-  onChangeText={handleSearch}  // Call handleSearch on every keystroke
-/>
+          style={styles.searchInput}
+          placeholder="Search..."
+          placeholderTextColor="#aaa"
+          value={searchQuery}
+          onChangeText={handleSearch}  // Call handleSearch on every keystroke
+        />
       </View>
-      
+
       <TouchableOpacity style={styles.cartContainer} onPress={() => navigateTo("/pages/Cart")}>
         <Ionicons name="cart-outline" size={28} color="#000" />
         {cart && cart.length > 0 && (
@@ -100,7 +100,7 @@ export function Sidebar() {
   const [activeItem, setActiveItem] = useState('home');
   const sidebarAnimation = useState(new Animated.Value(-280))[0];
   const overlayAnimation = useState(new Animated.Value(0))[0];
-  
+
   const screenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export function Sidebar() {
       setIsAdmin(false);
     }
   }, [user]);
-  
+
   // Control animations based on isOpen state
   useEffect(() => {
     if (isOpen) {
@@ -179,10 +179,10 @@ export function Sidebar() {
     <>
       {/* Overlay that appears when sidebar is open */}
       {isOpen && (
-        <Animated.View 
+        <Animated.View
           style={[
-            styles.overlay, 
-            { 
+            styles.overlay,
+            {
               opacity: overlayAnimation,
               height: screenHeight
             }
@@ -190,22 +190,22 @@ export function Sidebar() {
           onTouchStart={toggleSidebar}
         />
       )}
-      
+
       {/* Sidebar */}
-      <Animated.View 
+      <Animated.View
         style={[
-          styles.sidebar, 
-          { 
+          styles.sidebar,
+          {
             transform: [{ translateX: sidebarAnimation }],
             height: screenHeight
           }
         ]}
       >
-        <LinearGradient 
-          colors={['#ffffff', '#fff2f6']} 
+        <LinearGradient
+          colors={['#ffffff', '#fff2f6']}
           style={styles.sidebarBackground}
         />
-        
+
         <View style={styles.sidebarHeader}>
           <Image source={require("../assets/images/logo.png")} style={styles.sidebarLogo} />
           <Text style={styles.sidebarTitle}>Jewel</Text>
@@ -213,13 +213,13 @@ export function Sidebar() {
             <Ionicons name="close-outline" size={28} color="#000" />
           </TouchableOpacity>
         </View>
-        
+
         {user && (
           <View style={styles.userSection}>
             <View style={styles.avatarContainer}>
-              <Image 
-                source={user.avatar? { uri: user.profilePicture } : require("../assets/images/adaptive-icon.png")} 
-                style={styles.avatar} 
+              <Image
+                source={user.avatar ? { uri: user.profilePicture } : require("../assets/images/adaptive-icon.png")}
+                style={styles.avatar}
               />
               <View style={styles.userStatus} />
             </View>
@@ -229,37 +229,37 @@ export function Sidebar() {
             </View>
           </View>
         )}
-        
+
         <View style={styles.divider} />
-        
+
         <View style={styles.sidebarContent}>
-          <SidebarItem 
-            icon="home-outline" 
-            label={isAdmin ? "Dashboard" : "Home"} 
-            onPress={() => navigateTo(isAdmin ? "/pages/admin/AdminDashboard" : "/", "home")} 
+          <SidebarItem
+            icon="home-outline"
+            label={isAdmin ? "Dashboard" : "Home"}
+            onPress={() => navigateTo(isAdmin ? "/pages/admin/AdminDashboard" : "/", "home")}
             name="home"
           />
 
           {isAdmin ? (
             <>
-              <SidebarItem 
-                icon="cube-outline" 
-                label="Products" 
-                onPress={() => navigateTo("/pages/admin/Products", "products")} 
+              <SidebarItem
+                icon="cube-outline"
+                label="Products"
+                onPress={() => navigateTo("/pages/admin/Products", "products")}
                 name="products"
               />
 
-              <SidebarItem 
-                icon="people-outline" 
-                label="Users" 
-                onPress={() => navigateTo("/pages/Users", "users")} 
+              <SidebarItem
+                icon="people-outline"
+                label="Users"
+                onPress={() => navigateTo("/pages/Users", "users")}
                 name="users"
               />
 
-              <SidebarItem 
-                icon="clipboard-outline" 
-                label="Orders" 
-                onPress={() => navigateTo("/pages/admin/AdminOrders", "orders")} 
+              <SidebarItem
+                icon="clipboard-outline"
+                label="Orders"
+                onPress={() => navigateTo("/pages/admin/AdminOrders", "orders")}
                 name="orders"
               />
             </>
@@ -271,30 +271,37 @@ export function Sidebar() {
                 onPress={() => navigateTo("/pages/Collections", "collections")} 
                 name="collections"
               /> */}
-              
-              <SidebarItem 
-                icon="heart-outline" 
-                label="Wishlist" 
-                onPress={() => navigateTo("/pages/Wishlist", "wishlist")} 
+
+              <SidebarItem
+                icon="heart-outline"
+                label="Wishlist"
+                onPress={() => navigateTo("/pages/Wishlist", "wishlist")}
                 name="wishlist"
               />
-              
-              <SidebarItem 
-                icon="clipboard-outline" 
-                label="Orders" 
-                onPress={() => navigateTo("/pages/Orders", "orders")} 
+
+              <SidebarItem
+                icon="clipboard-outline"
+                label="Orders"
+                onPress={() => navigateTo("/pages/Orders", "orders")}
                 name="orders"
               />
             </>
           )}
 
-          <SidebarItem 
-            icon="person-outline" 
-            label="Profile" 
-            onPress={() => navigateTo(user ? "/pages/UserProfile" : "/pages/SignUpScreen", "profile")} 
+          <SidebarItem
+            icon="person-outline"
+            label="Profile"
+            onPress={() => navigateTo(user ? "/pages/UserProfile" : "/pages/SignUpScreen", "profile")}
             name="profile"
           />
-          
+          // In your Sidebar component, within the non-admin section
+<SidebarItem 
+  icon="star-outline" 
+  label="Reviews" 
+  onPress={() => navigateTo("/pages/Reviews", "reviews")} 
+  name="reviews"
+/>
+
           {/* <SidebarItem 
             icon="settings-outline" 
             label="Settings" 
@@ -302,7 +309,7 @@ export function Sidebar() {
             name="settings"
           /> */}
         </View>
-        
+
         {/* <View style={styles.sidebarFooter}>
           <LinearGradient 
             colors={['#ff6b98', '#ff92b3']} 

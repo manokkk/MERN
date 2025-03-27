@@ -4,6 +4,55 @@ const Product = require('../models/product');
 const User = require('../models/user'); // Ensure user validation
 const axios = require('axios');
 
+
+// In your order controller (backend)
+exports.getAcceptedOrders = async (req, res) => {
+    try {
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({
+                success: false,
+                message: "Authentication required"
+            });
+        }
+
+        const orders = await Order.find({ 
+            user: req.user._id,
+            orderStatus: 'Accepted'
+        })
+        .populate({
+            path: 'orderItems.product',
+            select: 'name images price'
+        })
+        .sort({ createdAt: -1 });
+
+        const formattedOrders = orders.map(order => ({
+            _id: order._id,
+            createdAt: order.createdAt,
+            orderItems: (order.orderItems || []).map(item => ({
+                product: {
+                    _id: item.product?._id || null,
+                    name: item.product?.name || 'Unknown Product',
+                    image: item.product?.images?.[0]?.url || null,
+                    price: item.product?.price || 0
+                },
+                quantity: item.quantity,
+                price: item.price
+            })),
+            totalPrice: order.totalPrice
+        }));
+
+        res.status(200).json({
+            success: true,
+            orders: formattedOrders
+        });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).json({ 
+            success: false,
+            message: error.message 
+        });
+    }
+};
 exports.createOrder = async (req, res) => {
     try {
         console.log("Request Body:", req.body);  // Debug userId issue
