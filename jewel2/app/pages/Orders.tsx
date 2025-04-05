@@ -85,10 +85,10 @@ const OrdersScreen = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Processing": return "#FF92A5";
-      case "Approved": return "#5E9EFF";
-      case "Canceled": return "#7ED957";
-      default: return "#FF92A5";
+      case "Processing": return "#ffd966";
+      case "Approved": return "#93c47d";
+      case "Canceled": return "#e06666";
+      default: return "#ffd966";
     }
   };
 
@@ -378,10 +378,10 @@ const OrdersScreen = () => {
                 disabled={imageUploading}
               >
                 {imageUploading ? (
-                  <ActivityIndicator color="#FF92A5" />
+                  <ActivityIndicator color="#5886c2" />
                 ) : (
                   <>
-                    <MaterialIcons name="add-a-photo" size={24} color="#FF92A5" />
+                    <MaterialIcons name="add-a-photo" size={24} color="#5886c2" />
                     <Text style={styles.photoUploadText}>Add Photo</Text>
                   </>
                 )}
@@ -411,7 +411,7 @@ const OrdersScreen = () => {
 
   const renderEmptyComponent = () => (
     <View style={styles.emptyContainer}>
-      <Ionicons name="cart-outline" size={64} color="#FFCDD2" />
+      <Ionicons name="cart-outline" size={64} color="#5886c2" />
       <Text style={styles.emptyText}>
         {userId ? "No orders found in this category." : "Please log in to view your orders."}
       </Text>
@@ -442,12 +442,12 @@ const OrdersScreen = () => {
 
         {status === "loading" ? (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color="#FF92A5" />
+            <ActivityIndicator size="large" color="#5886c2" />
             <Text style={styles.loadingText}>Loading your orders...</Text>
           </View>
         ) : error ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle-outline" size={64} color="#FF92A5" />
+            <Ionicons name="alert-circle-outline" size={64} color="#5886c2" />
             <Text style={styles.errorText}>
               {typeof error === "string" ? error : "Failed to load orders"}
             </Text>
@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
     fontWeight: "500"
   },
   activeTabText: { 
-    color: "#FF92A5", 
+    color: "#5886c2", 
     fontWeight: "bold"
   },
   listContainer: {
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     borderLeftWidth: 4,
-    borderLeftColor: "#FF92A5",
+    borderLeftColor: "#5886c2",
   },
   orderHeader: {
     flexDirection: "row",
@@ -607,11 +607,11 @@ const styles = StyleSheet.create({
   productPrice: { 
     fontSize: 14, 
     fontWeight: "700", 
-    color: "#FF92A5"
+    color: "#5886c2"
   },
   orderSummary: {
     marginTop: 12,
-    backgroundColor: "#FFF5F7",
+    backgroundColor: "#c8d5e7",
     padding: 12,
     borderRadius: 10,
   },
@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
   summaryValue: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#FF92A5"
+    color: "#5886c2"
   },
   emptyContainer: {
     flex: 1,
@@ -649,7 +649,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   errorText: { 
-    color: "#FF92A5", 
+    color: "#5886c2", 
     textAlign: "center", 
     fontSize: 16,
     marginTop: 16
@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
   },
   reviewButton: {
     marginTop: 4,
-    backgroundColor: "#FF92A5",
+    backgroundColor: "#5886c2",
     padding: 8,
     borderRadius: 8,
     alignItems: "center",
@@ -740,7 +740,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   submitButton: {
-    backgroundColor: '#FF92A5',
+    backgroundColor: '#5886c2',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -763,13 +763,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#FF92A5',
+    borderColor: '#5886c2',
     borderRadius: 8,
     padding: 12,
     marginBottom: 15,
   },
   photoUploadText: {
-    color: '#FF92A5',
+    color: '#5886c2',
     marginLeft: 8,
     fontWeight: '600',
   },

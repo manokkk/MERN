@@ -126,7 +126,7 @@ const ApprovedOrdersScreen = () => {
   if (loading && !refreshing) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#FF92A5" />
+        <ActivityIndicator size="large" color="#5886c2" />
         <Text style={styles.loadingText}>Loading your orders...</Text>
       </View>
     );
@@ -135,13 +135,13 @@ const ApprovedOrdersScreen = () => {
   if (error) {
     return (
       <View style={styles.centered}>
-        <Ionicons name="warning-outline" size={48} color="#FF92A5" />
+        <Ionicons name="warning-outline" size={48} color="#5886c2" />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity 
           style={styles.retryButton}
           onPress={fetchApprovedOrders}
         >
-          <Ionicons name="refresh" size={20} color="#FF92A5" />
+          <Ionicons name="refresh" size={20} color="#5886c2" />
           <Text style={styles.retryButtonText}>Try Again</Text>
         </TouchableOpacity>
       </View>
@@ -153,7 +153,7 @@ const ApprovedOrdersScreen = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Approved Orders</Text>
         <TouchableOpacity onPress={fetchApprovedOrders}>
-          <Ionicons name="refresh" size={24} color="#FF92A5" />
+          <Ionicons name="refresh" size={24} color="#5886c2" />
         </TouchableOpacity>
       </View>
       
@@ -165,13 +165,13 @@ const ApprovedOrdersScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={fetchApprovedOrders}
-            colors={["#FF92A5"]}
-            tintColor="#FF92A5"
+            colors={["#5886c2"]}
+            tintColor="#5886c2"
           />
         }
         ListEmptyComponent={
           <View style={styles.centered}>
-            <Ionicons name="receipt-outline" size={64} color="#FFCDD2" />
+            <Ionicons name="receipt-outline" size={64} color="#acbcd1" />
             <Text style={styles.emptyText}>No approved orders found</Text>
             <TouchableOpacity 
               style={styles.shopButton}
@@ -214,11 +214,11 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 16,
-    color: '#FF92A5',
+    color: '#5886c2',
     fontSize: 16,
   },
   errorText: {
-    color: '#FF92A5',
+    color: '#5886c2',
     marginTop: 16,
     fontSize: 16,
     textAlign: 'center',
@@ -232,10 +232,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#FF92A5',
+    borderColor: '#5886c2',
   },
   retryButtonText: {
-    color: '#FF92A5',
+    color: '#5886c2',
     marginLeft: 8,
     fontWeight: '600',
   },
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   shopButton: {
-    backgroundColor: '#FF92A5',
+    backgroundColor: '#5886c2',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 8,

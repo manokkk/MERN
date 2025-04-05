@@ -34,10 +34,10 @@ export default function Index() {
 
   const categories = [
     { id: "All", icon: "apps-outline", label: "All" },
-    { id: "Necklaces", icon: "flower-outline", label: "Necklaces" },
-    { id: "Earrings", icon: "star-outline", label: "Earrings" },
-    { id: "Bracelets", icon: "infinite-outline", label: "Bracelets" },
-    { id: "Rings", icon: "ellipse-outline", label: "Rings" }
+    { id: "Smartphones", icon: "phone-portrait-outline", label: "Smartphones" },
+    { id: "Laptops", icon: "laptop-outline", label: "Laptops" },
+    { id: "Cameras", icon: "camera-outline", label: "Cameras" },
+    { id: "Wearables", icon: "watch-outline", label: "Wearables" }
   ];
 
   useEffect(() => {
@@ -95,11 +95,11 @@ export default function Index() {
   const renderLoading = () => (
     <View style={styles.loadingContainer}>
       <LinearGradient
-        colors={['#f7dada', '#f9d1d1', '#f7dada']}
+        colors={['#acbcd1', '#c8d5e7', '#acbcd1']}
         style={styles.loadingGradient}
       >
-        <ActivityIndicator size="large" color="#e55c6c" />
-        <Text style={styles.loadingText}>Loading jewelry...</Text>
+        <ActivityIndicator size="large" color="#153d72" />
+        <Text style={styles.loadingText}>Loading Gadgets...</Text>
       </LinearGradient>
     </View>
   );
@@ -139,17 +139,17 @@ export default function Index() {
     >
       {/* Featured Banner */}
       <LinearGradient
-        colors={['#f7e4e4', '#faeaea']}
+        colors={['#c8d5e7', '#acbcd1']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.banner}
       >
         <View style={styles.bannerContent}>
-          <Text style={styles.bannerTitle}>Elegant Collection</Text>
-          <Text style={styles.bannerSubtitle}>Find your perfect piece</Text>
+          <Text style={styles.bannerTitle}>Latest Tech</Text>
+          <Text style={styles.bannerSubtitle}>Get your gadget now!</Text>
         </View>
         <Image 
-          source={require('../assets/images/banner.webp')} 
+          source={require('../assets/images/banner.jpg')} 
           style={styles.bannerImage}
         />
       </LinearGradient>
@@ -173,7 +173,7 @@ export default function Index() {
             >
               <LinearGradient
                 colors={selectedCategory === category.id 
-                  ? ['#e55c6c', '#f56a79'] 
+                  ? ['#5886c2', '#153d72'] 
                   : ['#f2f2f2', '#e8e8e8']}
                 style={styles.categoryGradient}
                 start={{ x: 0, y: 0 }}
@@ -201,7 +201,7 @@ export default function Index() {
       {/* Product List */}
       <View style={styles.productsContainer}>
         <Text style={styles.sectionTitle}>
-          {selectedCategory === 'All' ? 'All Jewelry' : selectedCategory}
+          {selectedCategory === 'All' ? 'All Gadgets' : selectedCategory}
           <Text style={styles.productCount}> ({filteredProducts.length})</Text>
         </Text>
         
@@ -259,7 +259,7 @@ export default function Index() {
                       </ScrollView>
                       {renderImageDots(validImages)}
                       <TouchableOpacity style={styles.favoriteButton}>
-                        <Ionicons name="heart-outline" size={18} color="#e55c6c" />
+                        <Ionicons name="heart-outline" size={18} color="#5886c2" />
                       </TouchableOpacity>
                     </View>
                     
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
   },
   selectedCategoryButton: {
     elevation: 2,
-    shadowColor: "#f56a79",
+    shadowColor: "#5886c2",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   addToCartButton: {
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     borderRadius: 15,
     width: 30,
     height: 30,
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addedToCartButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#5886c2",
   },
   emptyStateContainer: {
     flex: 1,

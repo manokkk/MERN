@@ -113,11 +113,11 @@ export default function CheckoutScreen() {
 
   return (
     <View style={styles.mainContainer}>
-      {/* <StatusBar backgroundColor="#f56a79" barStyle="light-content" /> */}
+      {/* <StatusBar backgroundColor="#5886c2" barStyle="light-content" /> */}
       
       {/* Header with Gradient */}
       <LinearGradient
-        colors={['#f56a79', '#ff85a1']}
+        colors={['#5886c2', '#153d72']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.header}
@@ -136,7 +136,7 @@ export default function CheckoutScreen() {
         {/* Shipping Information Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="location-outline" size={22} color="#f56a79" />
+            <Ionicons name="location-outline" size={22} color="#5886c2" />
             <Text style={styles.sectionTitle}>Shipping Information</Text>
           </View>
           
@@ -203,7 +203,7 @@ export default function CheckoutScreen() {
         {/* Payment Method Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="wallet-outline" size={22} color="#f56a79" />
+            <Ionicons name="wallet-outline" size={22} color="#5886c2" />
             <Text style={styles.sectionTitle}>Payment Method</Text>
           </View>
           
@@ -218,7 +218,7 @@ export default function CheckoutScreen() {
               <Ionicons 
                 name="cash-outline" 
                 size={24} 
-                color={modeOfPayment === "COD" ? "#fff" : "#f56a79"} 
+                color={modeOfPayment === "COD" ? "#fff" : "#5886c2"} 
               />
               <Text style={[
                 styles.paymentText, 
@@ -238,7 +238,7 @@ export default function CheckoutScreen() {
               <Ionicons 
                 name="card-outline" 
                 size={24} 
-                color={modeOfPayment === "Online Payment" ? "#fff" : "#f56a79"} 
+                color={modeOfPayment === "Online Payment" ? "#fff" : "#5886c2"} 
               />
               <Text style={[
                 styles.paymentText, 
@@ -253,7 +253,7 @@ export default function CheckoutScreen() {
         {/* Order Summary Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="receipt-outline" size={22} color="#f56a79" />
+            <Ionicons name="receipt-outline" size={22} color="#5886c2" />
             <Text style={styles.sectionTitle}>Order Summary</Text>
           </View>
           
@@ -392,11 +392,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   selectedPayment: {
-    backgroundColor: "#f56a79",
-    borderColor: "#f56a79",
+    backgroundColor: "#5886c2",
+    borderColor: "#5886c2",
   },
   paymentText: {
-    color: "#f56a79",
+    color: "#5886c2",
     fontWeight: "bold",
     marginLeft: 8,
   },
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
   totalValue: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#f56a79",
+    color: "#5886c2",
   },
   footer: {
     position: "absolute",
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   orderButton: {
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

@@ -223,7 +223,7 @@ export default function UserProfile() {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FF92A5" />
+          <ActivityIndicator size="large" color="#5886c2" />
           <Text style={styles.loadingText}>Loading your profile...</Text>
         </View>
       </SafeAreaView>
@@ -310,7 +310,7 @@ export default function UserProfile() {
         <View style={styles.optionsSection}>
           <TouchableOpacity style={styles.optionItem}>
             <View style={styles.optionIconContainer}>
-              <Ionicons name="settings-outline" size={20} color="#FF92A5" />
+              <Ionicons name="settings-outline" size={20} color="#5886c2" />
             </View>
             <Text style={styles.optionText}>Settings</Text>
             <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />
@@ -318,7 +318,7 @@ export default function UserProfile() {
 
           <TouchableOpacity style={styles.optionItem}>
             <View style={styles.optionIconContainer}>
-              <Ionicons name="help-circle-outline" size={20} color="#FF92A5" />
+              <Ionicons name="help-circle-outline" size={20} color="#5886c2" />
             </View>
             <Text style={styles.optionText}>Help & Support</Text>
             <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />
@@ -328,7 +328,7 @@ export default function UserProfile() {
             style={styles.logoutButton}
             onPress={handleLogout}
           >
-            <Ionicons name="log-out-outline" size={20} color="#FF92A5" />
+            <Ionicons name="log-out-outline" size={20} color="#5886c2" />
             <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -408,13 +408,13 @@ const styles = StyleSheet.create({
   placeholderText: {
     fontSize: 48,
     fontWeight: "bold",
-    color: "#FF92A5",
+    color: "#5886c2",
   },
   cameraIconContainer: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#FF92A5",
+    backgroundColor: "#5886c2",
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -466,12 +466,12 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
   updateButton: {
-    backgroundColor: "#FF92A5",
+    backgroundColor: "#5886c2",
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: "center",
     marginTop: 16,
-    shadowColor: "#FF92A5",
+    shadowColor: "#5886c2",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
   optionIconContainer: {
     width: 40,
     height: 40,
-    backgroundColor: "#FFF5F7",
+    backgroundColor: "#acbcd1",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -514,12 +514,12 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: "#FFF5F7",
+    backgroundColor: "#acbcd1",
   },
   logoutButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#FF92A5",
+    color: "#5886c2",
     marginLeft: 12,
   },
 });

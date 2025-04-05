@@ -15,7 +15,7 @@ export default function CartScreen() {
       
       {/* Header with Gradient */}
       <LinearGradient
-        colors={['#f56a79', '#ff85a1']}
+        colors={['#5886c2', '#153d72']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.header}
@@ -25,7 +25,7 @@ export default function CartScreen() {
       
       {cart.length === 0 ? (
         <View style={styles.emptyCartContainer}>
-          <Ionicons name="cart-outline" size={80} color="#f56a79" />
+          <Ionicons name="cart-outline" size={80} color="#5886c2" />
           <Text style={styles.emptyCartText}>Your shopping bag is empty</Text>
           <TouchableOpacity 
             style={styles.shopNowButton}
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   shopNowButton: {
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 30,
@@ -176,11 +176,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     elevation: 2,
-    borderColor: "#ffecf0",
+    borderColor: "#acbcd1",
     borderWidth: 1,
   },
   imageContainer: {
-    backgroundColor: "#ffecf0",
+    backgroundColor: "#acbcd1",
     padding: 5,
     borderRadius: 12,
     alignItems: "center",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 15,
-    color: "#f56a79",
+    color: "#5886c2",
     fontWeight: "600",
   },
   bottomRow: {
@@ -222,14 +222,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   quantityButton: {
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     width: 28,
     height: 28,
     alignItems: "center",
     justifyContent: "center",
   },
   quantityBox: {
-    backgroundColor: "#ffecf0",
+    backgroundColor: "#acbcd1",
     paddingHorizontal: 15,
     height: 28,
     alignItems: "center",
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   },
   quantity: {
     fontWeight: "bold",
-    color: "#f56a79",
+    color: "#5886c2",
   },
   totalItemPrice: {
     fontSize: 16,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     padding: 20,
     elevation: 8,
     borderTopWidth: 1,
-    borderColor: "#ffecf0",
+    borderColor: "#acbcd1",
   },
   totalRow: {
     flexDirection: "row",
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderColor: "#ffecf0",
+    borderColor: "#acbcd1",
     marginBottom: 15,
   },
   grandTotalLabel: {
@@ -287,10 +287,10 @@ const styles = StyleSheet.create({
   grandTotalText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#f56a79",
+    color: "#5886c2",
   },
   checkoutButton: {
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

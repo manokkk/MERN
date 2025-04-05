@@ -24,7 +24,7 @@ export default function AddProductScreen({ navigation }) {
         images: [],
     });
 
-    const categories = ["Necklaces", "Earrings", "Bracelets"];
+    const categories = ["Smartphones", "Laptops", "Cameras", "Wearables"];
 
     // Function to pick an image from the gallery
     const pickImage = async () => {

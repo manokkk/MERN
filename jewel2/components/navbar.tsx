@@ -63,8 +63,8 @@ export function TopNavbar() {
       </TouchableOpacity>
 
       <View style={styles.logoContainer}>
-        <Image source={require("../assets/images/logo.png")} style={styles.logo} />
-        <Text style={styles.logoName}>Jewel</Text>
+        <Image source={require("../assets/images/logos.png")} style={styles.logo} />
+        <Text style={styles.logoName}>Gadget Galaxy</Text>
       </View>
 
       <View style={styles.searchContainer}>
@@ -161,7 +161,7 @@ export function Sidebar() {
       onPress={() => onPress(name)}
     >
       <View style={styles.iconWrapper}>
-        <Ionicons name={icon} size={22} color={activeItem === name ? "black" : "#ff6b98"} />
+        <Ionicons name={icon} size={22} color={activeItem === name ? "black" : "#5886c2"} />
       </View>
       <Text style={[
         styles.sidebarText,
@@ -207,8 +207,8 @@ export function Sidebar() {
         />
 
         <View style={styles.sidebarHeader}>
-          <Image source={require("../assets/images/logo.png")} style={styles.sidebarLogo} />
-          <Text style={styles.sidebarTitle}>Jewel</Text>
+          <Image source={require("../assets/images/logos.png")} style={styles.sidebarLogo} />
+          <Text style={styles.sidebarTitle}>Gadget Galaxy</Text>
           <TouchableOpacity style={styles.closeButton} onPress={toggleSidebar}>
             <Ionicons name="close-outline" size={28} color="#000" />
           </TouchableOpacity>
@@ -273,10 +273,10 @@ export function Sidebar() {
               /> */}
 
               <SidebarItem
-                icon="heart-outline"
-                label="Wishlist"
-                onPress={() => navigateTo("/pages/Wishlist", "wishlist")}
-                name="wishlist"
+                icon="bookmark-outline"
+                label="Favorites"
+                onPress={() => navigateTo("/pages/Favorites", "favorites")}
+                name="favorites"
               />
 
               <SidebarItem
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -5,
     right: -10,
-    backgroundColor: "#ff6b98",
+    backgroundColor: "#5886c2",
     borderRadius: 10,
     width: 18,
     height: 18,
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
     flex: 1,
-    color: '#ff6b98',
+    color: '#153d72',
   },
   closeButton: {
     padding: 5,
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: '#ff6b98',
+    borderColor: '#5886c2',
   },
   userStatus: {
     position: 'absolute',
@@ -489,12 +489,12 @@ const styles = StyleSheet.create({
   },
   userRole: {
     fontSize: 12,
-    color: '#ff6b98',
+    color: '#153d72',
     marginTop: 2,
   },
   divider: {
     height: 1,
-    backgroundColor: '#ffcbd8',
+    backgroundColor: '#5886c2',
     marginHorizontal: 15,
     marginBottom: 15,
   },
@@ -512,7 +512,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   activeItem: {
-    backgroundColor: '#ff6b98',
+    backgroundColor: '#5886c2',
   },
   iconWrapper: {
     width: 36,
@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginRight: 10,
     borderWidth: 1,
-    borderColor: '#ffcbd8',
+    borderColor: '#153d72',
   },
   sidebarText: {
     fontSize: 15,

@@ -139,7 +139,7 @@ export default function SignUpScreen() {
             
             <View style={styles.headerContainer}>
               <Image 
-                source={require('../../assets/images/logo.png')} 
+                source={require('../../assets/images/logos.png')} 
                 style={styles.logo}
                 resizeMode="contain"
               />
@@ -147,7 +147,7 @@ export default function SignUpScreen() {
               <Text style={styles.subtitle}>
                 {isRegistering 
                   ? "Please fill in the details to get started" 
-                  : "Sign in to continue your journey"
+                  : "Sign in to sync your Gadget Galazy"
                 }
               </Text>
             </View>
@@ -165,14 +165,14 @@ export default function SignUpScreen() {
                     </View>
                   ) : (
                     <View style={styles.emptyProfileContainer}>
-                      <Ionicons name="person-add" size={30} color="#f56a79" />
+                      <Ionicons name="person-add" size={30} color="#5886c2" />
                       <Text style={styles.imagePlaceholder}>Add Photo</Text>
                     </View>
                   )}
                 </TouchableOpacity>
                 
                 <View style={styles.inputContainer}>
-                  <Ionicons name="person-outline" size={20} color="#f56a79" style={styles.inputIcon} />
+                  <Ionicons name="person-outline" size={20} color="#5886c2" style={styles.inputIcon} />
                   <TextInput
                     style={styles.input}
                     placeholder="Your name"
@@ -187,7 +187,7 @@ export default function SignUpScreen() {
             )}
 
             <View style={styles.inputContainer}>
-              <Ionicons name="mail-outline" size={20} color="#f56a79" style={styles.inputIcon} />
+              <Ionicons name="mail-outline" size={20} color="#5886c2" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -200,7 +200,7 @@ export default function SignUpScreen() {
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color="#f56a79" style={styles.inputIcon} />
+              <Ionicons name="lock-closed-outline" size={20} color="#5886c2" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Password"
@@ -213,7 +213,7 @@ export default function SignUpScreen() {
                 <Ionicons 
                   name={isPasswordVisible ? "eye-off-outline" : "eye-outline"} 
                   size={20} 
-                  color="#f56a79" 
+                  color="#5886c2" 
                 />
               </TouchableOpacity>
             </View>
@@ -228,7 +228,7 @@ export default function SignUpScreen() {
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <LinearGradient
-                colors={['#f56a79', '#ff85a1']}
+                colors={['#5886c2', '#153d72']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.buttonGradient}
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#f56a79",
+    color: "#5886c2",
     textAlign: "center",
     marginBottom: 8,
   },
@@ -362,13 +362,13 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 3,
-    borderColor: "#f56a79",
+    borderColor: "#5886c2",
   },
   editIconContainer: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#f56a79",
+    backgroundColor: "#5886c2",
     borderRadius: 15,
     width: 30,
     height: 30,
@@ -385,12 +385,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#f56a79",
+    borderColor: "#5886c2",
     borderStyle: "dashed",
   },
   imagePlaceholder: {
     fontSize: 14,
-    color: "#f56a79",
+    color: "#5886c2",
     marginTop: 5,
   },
   forgotPassword: {
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   forgotPasswordText: {
-    color: "#f56a79",
+    color: "#5886c2",
     fontSize: 14,
   },
   button: {
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   },
   toggleTextBold: {
     fontSize: 15,
-    color: "#f56a79",
+    color: "#5886c2",
     fontWeight: "600",
   }
 });

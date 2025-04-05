@@ -167,9 +167,10 @@ const captureImage = async () => {
 
       <Picker selectedValue={category} onValueChange={(itemValue) => setCategory(itemValue)}>
         <Picker.Item label="Select Category" value="" />
-        <Picker.Item label="Necklaces" value="Necklaces" />
-        <Picker.Item label="Earrings" value="Earrings" />
-        <Picker.Item label="Bracelets" value="Bracelets" />
+        <Picker.Item label="Smartphones" value="Smartphones" />
+        <Picker.Item label="Laptops" value="Laptops" />
+        <Picker.Item label="Cameras" value="Cameras" />
+        <Picker.Item label="Wearables" value="Wearables" />
       </Picker>
 
       <Button title="Update Product" onPress={handleUpdate} />
