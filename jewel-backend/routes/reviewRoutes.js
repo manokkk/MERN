@@ -1,11 +1,16 @@
-// routes/reviewRoutes.js
 const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
+const { protect } = require('../middleware/authMiddleware');
+const upload = require('../utils/multer');
 
-// Routes without middleware (authentication handled in controller)
-router.post('/', reviewController.createReview);
-router.get('/get', reviewController.getUserReviews);
-router.get('/eligible-orders', reviewController.getReviewEligibleOrders);
+// POST /api/reviews - Create a review (protected + image upload)
+router.post('/', protect, upload.single('photo'), reviewController.createReview);
+
+// GET /api/reviews/product/:productId - Get reviews for a product
+router.get('/product/:productId', reviewController.getProductReviews);
+
+// DELETE /api/reviews/:id - Delete a review (protected)
+router.delete('/:id', protect, reviewController.deleteReview);
 
 module.exports = router;

@@ -4,52 +4,75 @@ const Product = require('../models/product');
 const User = require('../models/user'); // Ensure user validation
 const axios = require('axios');
 
-
-// In your order controller (backend)
 exports.getAcceptedOrders = async (req, res) => {
     try {
-        if (!req.user || !req.user._id) {
-            return res.status(401).json({
+        // 1. Get and log the incoming user ID
+        const { userId } = req.params;
+        console.log('[Order Controller] Received userId:', userId);
+        console.log('Request details:', {
+            method: req.method,
+            url: req.originalUrl,
+            params: req.params,
+            query: req.query
+        });
+
+        // 2. Validate the user ID format
+        if (!userId) {
+            console.error('Missing userId parameter');
+            return res.status(400).json({
                 success: false,
-                message: "Authentication required"
+                message: "User ID is required"
             });
         }
 
+        if (!/^[0-9a-fA-F]{24}$/.test(userId)) {
+            console.error('Invalid userId format:', userId);
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID format"
+            });
+        }
+
+        // 3. Log the query being executed
+        console.log('Executing query for:', {
+            user: userId,
+            orderStatus: 'Approved'
+        });
+
+        // 4. Fetch orders with additional logging
         const orders = await Order.find({ 
-            user: req.user._id,
-            orderStatus: 'Accepted'
+            user: userId,
+            orderStatus: 'Approved'
         })
-        .populate({
-            path: 'orderItems.product',
-            select: 'name images price'
-        })
-        .sort({ createdAt: -1 });
+        .populate('orderItems.product', 'name images price')
+        .sort({ createdAt: -1 })
+        .lean(); // Using lean() for better logging
 
-        const formattedOrders = orders.map(order => ({
-            _id: order._id,
-            createdAt: order.createdAt,
-            orderItems: (order.orderItems || []).map(item => ({
-                product: {
-                    _id: item.product?._id || null,
-                    name: item.product?.name || 'Unknown Product',
-                    image: item.product?.images?.[0]?.url || null,
-                    price: item.product?.price || 0
-                },
-                quantity: item.quantity,
-                price: item.price
-            })),
-            totalPrice: order.totalPrice
-        }));
+        console.log(`Found ${orders.length} orders for user ${userId}`);
+        if (orders.length > 0) {
+            console.log('Sample order:', {
+                _id: orders[0]._id,
+                status: orders[0].orderStatus,
+                itemCount: orders[0].orderItems.length
+            });
+        }
 
+        // 5. Send response
         res.status(200).json({
             success: true,
-            orders: formattedOrders
+            orders
         });
+
     } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error('[Order Controller] Error:', {
+            message: error.message,
+            stack: error.stack,
+            receivedUserId: req.params.userId
+        });
         res.status(500).json({ 
             success: false,
-            message: error.message 
+            message: 'Server error while fetching orders',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
