@@ -42,7 +42,7 @@ export default function UserProfile() {
         }
 
         const response = await axios.post(
-          "http://192.168.100.4:4000/api/auth/user",
+          "http://192.168.0.159:4000/api/auth/user",
           { token }
         );
 

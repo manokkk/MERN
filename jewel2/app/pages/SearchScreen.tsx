@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import axios from "axios";
 
-const API_URL = "http://192.168.100.4:4000/api/product/search";
+const API_URL = "http://192.168.0.159:4000/api/product/search";
 
 const categories = [
   { id: "All", icon: "apps-outline", label: "All" },

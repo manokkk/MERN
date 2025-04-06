@@ -22,7 +22,7 @@ const ProductListScreen = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://192.168.100.4:4000/api/product/get");
+      const response = await axios.get("http://192.168.0.159:4000/api/product/get");
       console.log("Fetched Products:", response.data.products); // ✅ Debugging Step
       setProducts(response.data.products); // ✅ Extract only the "products" array
     } catch (error) {
@@ -40,7 +40,7 @@ const ProductListScreen = () => {
         text: "Delete",
         onPress: async () => {
           try {
-            await axios.delete(`http://192.168.100.4:4000/api/product/delete/${id}`);
+            await axios.delete(`http://192.168.0.159:4000/api/product/delete/${id}`);
             Alert.alert("Success", "Product deleted successfully.");
             fetchProducts(); // Refresh list
           } catch (error) {

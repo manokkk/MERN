@@ -32,7 +32,7 @@ type ReviewData = {
   productId: string;
   productName: string;
   orderId: string;
-  photo: string | null;
+  photos: string[];
 };
 
 const OrdersScreen = () => {
@@ -47,7 +47,7 @@ const OrdersScreen = () => {
     productId: "",
     productName: "",
     orderId: "",
-    photo: null
+    photos: []
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
@@ -93,13 +93,19 @@ const OrdersScreen = () => {
   };
 
   const openReviewModal = (productId: string, productName: string, orderId: string) => {
+    console.log("Opening review for:", { 
+      productId, 
+      productName, 
+      orderId,
+      currentTime: new Date().toISOString() 
+    });
     setReviewData({
       rating: 0,
       comment: "",
       productId,
       productName,
       orderId,
-      photo: null
+      photos: []
     });
     setReviewModalVisible(true);
     setSubmissionError("");
@@ -130,6 +136,7 @@ const OrdersScreen = () => {
 
       const pickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.7,
@@ -137,9 +144,10 @@ const OrdersScreen = () => {
 
       if (!pickerResult.canceled && pickerResult.assets && pickerResult.assets.length > 0) {
         setImageUploading(true);
+        const newPhotos = pickerResult.assets.map(asset => asset.uri);
         setReviewData(prev => ({
           ...prev,
-          photo: pickerResult.assets[0].uri
+          photos: [...prev.photos, ...newPhotos].slice(0, 5) // Limit to 5 photos
         }));
       }
     } catch (error) {
@@ -150,30 +158,30 @@ const OrdersScreen = () => {
     }
   };
 
-  const removeImage = () => {
+  const removeImage = (index: number) => {
     setReviewData(prev => ({
       ...prev,
-      photo: null
+      photos: prev.photos.filter((_, i) => i !== index)
     }));
   };
 
   const submitReview = async () => {
     setIsSubmitting(true);
     setSubmissionError("");
-  
+
     try {
-      // 1. Get user data including token
-      const userDataString = await AsyncStorage.getItem("user");
-      if (!userDataString) {
+      // 1. Get authentication data
+      const [userDataString, token] = await Promise.all([
+        AsyncStorage.getItem("user"),
+        AsyncStorage.getItem("token")
+      ]);
+      
+      if (!userDataString || !token) {
         throw new Error("Please login to submit a review");
       }
-      
+
       const userData = JSON.parse(userDataString);
-      const token = userData.token;
-      
-      if (!token) {
-        throw new Error("Authentication token not found");
-      }
+      const userId = userData._id || userData.id;
 
       // 2. Validate required fields
       if (reviewData.rating === 0) {
@@ -181,33 +189,52 @@ const OrdersScreen = () => {
         return;
       }
 
-      if (!reviewData.productId || !reviewData.orderId) {
-        throw new Error("Product and order information missing");
+      if (!reviewData.comment || reviewData.comment.trim() === "") {
+        setSubmissionError("Please enter a review comment");
+        return;
+      }
+
+      if (reviewData.comment.length > 500) {
+        setSubmissionError("Review cannot exceed 500 characters");
+        return;
       }
 
       // 3. Prepare form data
       const formData = new FormData();
+      formData.append('orderId', reviewData.orderId);
+      formData.append('productId', reviewData.productId);
+      formData.append('userId', userId);
       formData.append('rating', reviewData.rating.toString());
       formData.append('comment', reviewData.comment);
-      formData.append('productId', reviewData.productId);
-      formData.append('orderId', reviewData.orderId);
       
-      // 4. Handle image upload if exists
-      if (reviewData.photo) {
-        const filename = reviewData.photo.split('/').pop();
-        const match = /\.(\w+)$/.exec(filename || '');
-        const type = match ? `image/${match[1]}` : 'image';
+      // 4. Handle multiple image uploads if exists
+      if (reviewData.photos.length > 0) {
+        reviewData.photos.forEach((photo, index) => {
+          const filename = photo.split('/').pop();
+          const match = /\.(\w+)$/.exec(filename || '');
+          const type = match ? `image/${match[1]}` : 'image';
 
-        formData.append('photo', {
-          uri: reviewData.photo,
-          name: filename || `review_${Date.now()}.jpg`,
-          type
-        } as any);
+          formData.append('photos', {
+            uri: photo,
+            name: filename || `review_${Date.now()}_${index}.jpg`,
+            type
+          } as any);
+        });
       }
+
+      console.log("Submitting review with:", {
+        orderId: reviewData.orderId,
+        productId: reviewData.productId,
+        userId,
+        rating: reviewData.rating,
+        commentLength: reviewData.comment.length,
+        photoCount: reviewData.photos.length,
+        timestamp: new Date().toISOString()
+      });
 
       // 5. Submit to backend
       const response = await axios.post(
-        "http://192.168.100.4:4000/api/reviews",
+        "http://192.168.0.159:4000/api/reviews/",
         formData,
         {
           headers: {
@@ -218,7 +245,13 @@ const OrdersScreen = () => {
         }
       );
 
-      if (response.data.success) {
+      console.log("Review response:", {
+        status: response.status,
+        data: response.data,
+        timestamp: new Date().toISOString()
+      });
+
+      if (response.data.message === 'Review created successfully') {
         Alert.alert("Success", "Review submitted successfully!");
         setReviewModalVisible(false);
         if (userId) {
@@ -228,14 +261,27 @@ const OrdersScreen = () => {
         throw new Error(response.data.message || "Review submission failed");
       }
     } catch (error: any) {
-      console.error("Review submission error:", error);
+      console.error("Review submission error:", {
+        error: error.message,
+        response: error.response?.data,
+        timestamp: new Date().toISOString()
+      });
       
       let errorMessage = "Failed to submit review";
       if (error.response) {
-        if (error.response.status === 401) {
+        if (error.response.status === 400) {
+          if (error.response.data.message.includes('already reviewed')) {
+            errorMessage = "You've already reviewed this product from this order";
+          } else if (error.response.data.message.includes('approved')) {
+            errorMessage = "You can only review products from your approved orders";
+          } else {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.response.status === 401) {
           errorMessage = "Session expired. Please login again.";
-        } else if (error.response.data?.message) {
-          errorMessage = error.response.data.message;
+          await AsyncStorage.multiRemove(['user', 'token']);
+        } else if (error.response.status === 422) {
+          errorMessage = "Validation error: " + Object.values(error.response.data.errors).join('\n');
         }
       } else if (error.message) {
         errorMessage = error.message;
@@ -247,55 +293,61 @@ const OrdersScreen = () => {
     }
   };
 
-  const renderOrderItem = ({ item }: { item: any }) => (
-    <View style={styles.orderItem}>
-      <View style={styles.orderHeader}>
-        <View>
-          <Text style={styles.orderTitle}>{`Order #${item._id.substring(0, 8)}...`}</Text>
-          <Text style={styles.orderDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+  const renderOrderItem = ({ item }: { item: any }) => {
+    return (
+      <View style={styles.orderItem}>
+        <View style={styles.orderHeader}>
+          <View>
+            <Text style={styles.orderTitle}>{`Order #${item._id.substring(0, 8)}...`}</Text>
+            <Text style={styles.orderDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+          </View>
+          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.orderStatus) }]}>
+            <Text style={styles.statusText}>{item.orderStatus}</Text>
+          </View>
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.orderStatus) }]}>
-          <Text style={styles.statusText}>{item.orderStatus}</Text>
-        </View>
-      </View>
 
-      <Text style={styles.sectionTitle}>Products</Text>
-      {item.orderItems.map((product: any, index: number) => (
-        <View key={`${product._id}-${index}`}>
-          <View style={styles.productItem}>
-            <Image source={{ uri: product.image }} style={styles.productImage} />
-            <View style={styles.productDetails}>
-              <Text style={styles.productName}>{product.name}</Text>
-              <View style={styles.productMetaContainer}>
-                <Text style={styles.productQuantity}>{`Qty: ${product.quantity}`}</Text>
-                <Text style={styles.productPrice}>{`₱${product.price.toFixed(2)}`}</Text>
+        <Text style={styles.sectionTitle}>Products</Text>
+        {item.orderItems.map((product: any, index: number) => (
+          <View key={`${product._id}-${index}`}>
+            <View style={styles.productItem}>
+              <Image source={{ uri: product.image }} style={styles.productImage} />
+              <View style={styles.productDetails}>
+                <Text style={styles.productName}>{product.name}</Text>
+                <View style={styles.productMetaContainer}>
+                  <Text style={styles.productQuantity}>{`Qty: ${product.quantity}`}</Text>
+                  <Text style={styles.productPrice}>{`₱${product.price.toFixed(2)}`}</Text>
+                </View>
               </View>
             </View>
+            
+            {item.orderStatus === "Approved" && (
+              <TouchableOpacity 
+                style={styles.reviewButton}
+                onPress={() => openReviewModal(
+                  product.product?._id || product.product || product._id,
+                  product.name,
+                  item._id
+                )}
+              >
+                <Text style={styles.reviewButtonText}>Review This Product</Text>
+              </TouchableOpacity>
+            )}
           </View>
-          
-          {item.orderStatus === "Approved" && (
-            <TouchableOpacity 
-              style={styles.reviewButton}
-              onPress={() => openReviewModal(product._id, product.name, item._id)}
-            >
-              <Text style={styles.reviewButtonText}>Review This Product</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
+        ))}
 
-      <View style={styles.orderSummary}>
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Total</Text>
-          <Text style={styles.summaryValue}>{`₱${item.totalPrice.toFixed(2)}`}</Text>
-        </View>
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Payment Method</Text>
-          <Text style={styles.summaryValue}>{item.modeOfPayment}</Text>
+        <View style={styles.orderSummary}>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Total</Text>
+            <Text style={styles.summaryValue}>{`₱${item.totalPrice.toFixed(2)}`}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Payment Method</Text>
+            <Text style={styles.summaryValue}>{item.modeOfPayment}</Text>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderStars = () => {
     return (
@@ -345,7 +397,7 @@ const OrdersScreen = () => {
             <Text style={styles.ratingLabel}>Your Rating</Text>
             {renderStars()}
             
-            <Text style={styles.commentLabel}>Your Review (Optional)</Text>
+            <Text style={styles.commentLabel}>Your Review</Text>
             <TextInput
               style={styles.commentInput}
               multiline
@@ -353,40 +405,46 @@ const OrdersScreen = () => {
               placeholder="Share your experience with this product..."
               value={reviewData.comment}
               onChangeText={handleCommentChange}
+              maxLength={500}
             />
+            <Text style={styles.charCount}>
+              {reviewData.comment.length}/500 characters
+            </Text>
             
-            <Text style={styles.photoLabel}>Add Photo (Optional)</Text>
-            {reviewData.photo ? (
-              <View style={styles.photoPreviewContainer}>
+            <Text style={styles.photoLabel}>Add Photos (Optional, max 5)</Text>
+            <View style={styles.photosContainer}>
+              {reviewData.photos.map((photo, index) => (
                 <ImageBackground 
-                  source={{ uri: reviewData.photo }}
+                  key={index}
+                  source={{ uri: photo }}
                   style={styles.photoPreview}
                   resizeMode="cover"
                 >
                   <TouchableOpacity 
                     style={styles.removePhotoButton}
-                    onPress={removeImage}
+                    onPress={() => removeImage(index)}
                   >
                     <Ionicons name="close" size={20} color="#FFF" />
                   </TouchableOpacity>
                 </ImageBackground>
-              </View>
-            ) : (
-              <TouchableOpacity 
-                style={styles.photoUploadButton}
-                onPress={pickImage}
-                disabled={imageUploading}
-              >
-                {imageUploading ? (
-                  <ActivityIndicator color="#5886c2" />
-                ) : (
-                  <>
-                    <MaterialIcons name="add-a-photo" size={24} color="#5886c2" />
-                    <Text style={styles.photoUploadText}>Add Photo</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            )}
+              ))}
+              {reviewData.photos.length < 5 && (
+                <TouchableOpacity 
+                  style={styles.photoUploadButton}
+                  onPress={pickImage}
+                  disabled={imageUploading}
+                >
+                  {imageUploading ? (
+                    <ActivityIndicator color="#5886c2" />
+                  ) : (
+                    <>
+                      <MaterialIcons name="add-a-photo" size={24} color="#5886c2" />
+                      <Text style={styles.photoUploadText}>Add Photo</Text>
+                    </>
+                  )}
+                </TouchableOpacity>
+              )}
+            </View>
             
             {submissionError ? (
               <Text style={styles.errorText}>{submissionError}</Text>
@@ -468,7 +526,6 @@ const OrdersScreen = () => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -649,10 +706,11 @@ const styles = StyleSheet.create({
     padding: 20
   },
   errorText: { 
-    color: "#5886c2", 
+    color: "#e74c3c", 
     textAlign: "center", 
     fontSize: 16,
-    marginTop: 16
+    marginTop: 16,
+    marginBottom: 10
   },
   loaderContainer: {
     flex: 1,
@@ -737,7 +795,13 @@ const styles = StyleSheet.create({
     padding: 12,
     minHeight: 100,
     textAlignVertical: 'top',
-    marginBottom: 15,
+    marginBottom: 5,
+  },
+  charCount: {
+    fontSize: 12,
+    color: '#888',
+    textAlign: 'right',
+    marginBottom: 15
   },
   submitButton: {
     backgroundColor: '#5886c2',
@@ -758,32 +822,36 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 8,
   },
-  photoUploadButton: {
+  photosContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#5886c2',
-    borderRadius: 8,
-    padding: 12,
+    flexWrap: 'wrap',
     marginBottom: 15,
-  },
-  photoUploadText: {
-    color: '#5886c2',
-    marginLeft: 8,
-    fontWeight: '600',
-  },
-  photoPreviewContainer: {
-    marginBottom: 15,
-    alignItems: 'center',
   },
   photoPreview: {
-    width: 200,
-    height: 200,
+    width: 80,
+    height: 80,
     borderRadius: 8,
+    marginRight: 8,
+    marginBottom: 8,
     overflow: 'hidden',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
+  },
+  photoUploadButton: {
+    width: 80,
+    height: 80,
+    borderWidth: 1,
+    borderColor: '#5886c2',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  photoUploadText: {
+    color: '#5886c2',
+    fontSize: 12,
+    marginTop: 4,
+    textAlign: 'center',
   },
   removePhotoButton: {
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -792,7 +860,7 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 8,
+    margin: 4,
   },
 });
 

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // API Base URL
-const API_URL = "http://192.168.100.4:4000/api/order";
+const API_URL = "http://192.168.0.159:4000/api/order";
 
 // 🔹 Fetch Orders for Logged-in User (GET /get/:userId)
 export const fetchUserOrders = createAsyncThunk(

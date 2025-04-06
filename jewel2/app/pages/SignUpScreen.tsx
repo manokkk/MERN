@@ -79,8 +79,8 @@ export default function SignUpScreen() {
   
     try {
       const url = isRegistering
-        ? "http://192.168.100.4:4000/api/auth/register"
-        : "http://192.168.100.4:4000/api/auth/login";
+        ? "http://192.168.0.159:4000/api/auth/register"
+        : "http://192.168.0.159:4000/api/auth/login";
   
       let requestData;
   

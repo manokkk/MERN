@@ -21,5 +21,5 @@ app.listen(4000, "0.0.0.0", () => {
 app.use('/api/product', products);
 app.use('/api/auth', user);
 app.use('/api/order', order);
-app.use('/api/review', review);
+app.use('/api/reviews', review);
 

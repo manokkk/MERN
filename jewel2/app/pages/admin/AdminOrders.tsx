@@ -8,7 +8,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
-const API_URL = "http://192.168.100.4:4000/api/order";
+const API_URL = "http://192.168.0.159:4000/api/order";
 
 const AdminOrdersScreen = () => {
   const dispatch = useDispatch<AppDispatch>();

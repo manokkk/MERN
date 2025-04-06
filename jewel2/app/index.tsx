@@ -43,7 +43,7 @@ export default function Index() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://192.168.100.4:4000/api/product/get");
+        const response = await axios.get("http://192.168.0.159:4000/api/product/get");
         if (response.data.success) {
           setProducts(response.data.products);
           
